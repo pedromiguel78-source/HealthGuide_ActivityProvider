@@ -1,0 +1,21 @@
+ # .htaccess para HealthGuide Activity Provider
+# Redirecionar todas as requests para index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Se o ficheiro ou diretório existe, não reescrever
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Redirecionar tudo para index.php mantendo query string
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Permitir CORS para Inven!RA
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type"
+</IfModule>
