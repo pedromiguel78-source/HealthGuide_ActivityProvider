@@ -1,4 +1,4 @@
- # .htaccess para HealthGuide Activity Provider
+# .htaccess para HealthGuide Activity Provider
 # Redirecionar todas as requests para index.php
 
 <IfModule mod_rewrite.c>

@@ -3,23 +3,18 @@ FROM php:8.2-apache
 # Copiar código para o container
 COPY . /var/www/html/
 
-# Habilitar mod_rewrite
-RUN a2enmod rewrite
+# Habilitar mod_rewrite e mod_headers
+RUN a2enmod rewrite headers
+
+# Configurar Apache para permitir .htaccess
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # Configurar permissões
 RUN chown -R www-data:www-data /var/www/html
 
-# Permitir htaccess e override
-RUN echo "<Directory /var/www/html/> \
-        AllowOverride All \
-        Require all granted \
-    </Directory>" > /etc/apache2/conf-available/rewrite.conf \
-    && a2enconf rewrite
-
-# Forçar Apache a usar index.php como root
-RUN echo "DirectoryIndex index.php" >> /etc/apache2/apache2.conf
+# Verificar que .htaccess existe
+RUN ls -la /var/www/html/.htaccess || echo "WARNING: .htaccess não encontrado!"
 
 EXPOSE 80
 
 CMD ["apache2-foreground"]
-

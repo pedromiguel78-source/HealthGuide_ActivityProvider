@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: healthguide-activityprovider
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    envVars:
+      - key: APACHE_DOCUMENT_ROOT
+        value: /var/www/html
+ 

@@ -63,8 +63,7 @@ echo "  Tipo: " . $data['tipo'] . "\n\n";
 // Teste 5: Tentar criar nova instância diretamente (deve falhar)
 echo "--- TESTE 5: Prevenção de Criação Direta ---\n";
 try {
-    // Isto não é possível porque o construtor é privado
-    // $db3 = new SingletonDB(); // Descomentar causaria erro
+    // Não é possível porque o construtor é privado
     echo "✅ Construtor privado previne criação direta\n";
 } catch (Error $e) {
     echo "❌ ERRO: " . $e->getMessage() . "\n";
