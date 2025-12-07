@@ -143,9 +143,9 @@ Cardoso, P., Morgado, L., & Coelho, A. (2020). Authoring Game-Based Learning Act
 
 
 
-**Pedro Pereira - 1102837  
-**Mestrado em Engenharia Informática e Tecnologia Web  
-**Universidade Aberta  
-**Arquitetura e Padrões de Software  
+Pedro Pereira - 1102837  
+Mestrado em Engenharia Informática e Tecnologia Web  
+Universidade Aberta  
+Arquitetura e Padrões de Software  
 Ano Letivo:  2025/2026
  
