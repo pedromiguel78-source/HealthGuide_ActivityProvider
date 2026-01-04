@@ -190,9 +190,18 @@
                 base de dados existe durante toda a execução.
             </p>
         </div>
+     <div class="info-box" style="margin-top: 20px;">
+            <h3>🧩 Padrão Facade</h3>
+            <p>
+                Para reduzir a dependência entre os endpoints e a lógica interna, é aplicado o padrão
+                <strong>Facade</strong>, através do <em>HealthGuideFacade</em>, que atua como ponto de entrada único para as operações
+                principais (parâmetros, deploy e analytics), <strong>articulando</strong> os serviços internos e
+                <strong>encapsulando</strong> a complexidade do subsistema.
+            </p>
+        </div>
 
         <div class="footer">
-            © 2025 HealthGuide - Padrão Singleton | Pedro Pereira - 1102837<br>
+            © 2025 HealthGuide - Padrão Singleton + Facade | Pedro Pereira - 1102837<br>
             Universidade Aberta - Arquitetura e Padrões de Software
         </div>
     </div>

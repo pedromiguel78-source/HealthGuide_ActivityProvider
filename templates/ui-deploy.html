@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deploy de Instância — HealthGuide</title>
+  <style>
+    body{margin:0;background:linear-gradient(135deg,#7FDBFF,#B5E9FF);font-family:Verdana,sans-serif;color:#003B5C;min-height:100vh;padding:20px;}
+    .wrap{max-width:900px;margin:0 auto;}
+    .card{padding:28px;border-radius:20px;background:rgba(255,255,255,.3);backdrop-filter:blur(6px);border:2px solid rgba(255,255,255,.4);}
+    h1{margin:0 0 10px 0;font-size:34px;}
+    p{line-height:1.6;margin:10px 0;}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0;}
+    input{padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.45);font-weight:600;color:#003B5C;min-width:260px;}
+    button, a.btn{padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.45);font-weight:800;color:#003B5C;cursor:pointer;text-decoration:none;display:inline-block;}
+    button:hover, a.btn:hover{background:rgba(255,255,255,.65)}
+    pre{background:rgba(0,59,92,.12);padding:16px;border-radius:14px;overflow:auto;border:1px solid rgba(255,255,255,.35);}
+    code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    .muted{opacity:.85}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>🚀 Deploy de Instância</h1>
+      <p class="muted">
+        Este endpoint cria (se necessário) uma instância associada ao <code>activityID</code> e devolve a URL
+        para o utilizador aceder ao guia. A criação é feita via <strong>Facade</strong>, apoiada pelo <strong>SingletonDB</strong>.
+      </p>
+
+      <div class="row">
+        <label for="activityID"><strong>activityID:</strong></label>
+        <input id="activityID" type="text" value="demo2025" />
+        <button id="btn">Gerar resposta</button>
+        <a class="btn" href="/">Voltar</a>
+      </div>
+
+      <p><a id="raw" class="btn" href="/deploy-healthguide?activityID=demo2025">Ver JSON (endpoint)</a></p>
+
+      <h3>Resposta</h3>
+      <pre><code id="out">(carregando...)</code></pre>
+    </div>
+  </div>
+
+  <script>
+    function setRawLink(id){
+      const url = `/deploy-healthguide?activityID=${encodeURIComponent(id)}`;
+      document.getElementById('raw').setAttribute('href', url);
+      return url;
+    }
+
+    async function load(){
+      const id = document.getElementById('activityID').value.trim() || 'demo2025';
+      const url = setRawLink(id);
+      const out = document.getElementById('out');
+      out.textContent = '(carregando...)';
+      try{
+        const res = await fetch(url);
+        const json = await res.json();
+        out.textContent = JSON.stringify(json, null, 2);
+      }catch(e){
+        out.textContent = 'Erro ao obter dados do endpoint.';
+      }
+    }
+
+    document.getElementById('btn').addEventListener('click', load);
+    document.getElementById('activityID').addEventListener('keydown', (e)=>{ if(e.key==='Enter') load(); });
+    load();
+  </script>
+</body>
+</html>
