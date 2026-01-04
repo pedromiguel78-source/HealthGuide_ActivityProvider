@@ -12,16 +12,27 @@ Repositório GitHub:
 
 https://github.com/pedromiguel78-source/HealthGuide_ActivityProvider.git
 
-
 ---
 
 ## Arquitetura e Tecnologias
 
 - **Linguagem:** PHP 8.2
 - **Servidor Web:** Apache
-- **Padrão de Design:** Singleton
+- **Padrão de Design:** Singleton, Facade
 - **Deploy:** Render (com Docker)
 - **Arquitetura:** RESTful seguindo especificação Inven!RA
+
+---
+
+## Deploy (Render)
+
+Evolução arquitetural do projeto, encontram-se disponíveis duas versões:
+
+- **Versão inicial (Singleton):**  
+  https://healthguide-activityprovider.onrender.com
+
+- **Versão evoluída (Singleton + Facade):**  
+  https://healthguide-activityprovider-1.onrender.com
 
 ---
 
@@ -49,13 +60,6 @@ Disponibiliza a lista de métricas quantitativas e qualitativas recolhidas.
 **POST** `/analytics-healthguide`  
 Recebe o ID da atividade e retorna os dados analíticos correspondentes.
 
-**Corpo do pedido:**
-```json
-{
-  "activityID": "demo2025"
-}
-```
-
 ### Endpoint Adicional
 **GET** `/guia-healthguide?activityID={id}`  
 Visualização do guia de saúde pelo paciente.
@@ -70,65 +74,57 @@ O sistema utiliza o padrão de criação **Singleton** para gerir a base de dado
 
 A classe `SingletonDB` implementa o padrão através de:
 
-1. **Construtor privado** – Impede a criação direta de instâncias
-2. **Atributo estático** – Armazena a única instância da classe
-3. **Método getInstance()** – Ponto de acesso global à instância
-
-**Fluxo de utilização:**
-- Na primeira chamada a `getInstance()`, a instância é criada e a base de dados é povoada com os guias de saúde
-- Nas chamadas subsequentes, a mesma instância é retornada, evitando duplicação de dados e recursos
+1. **Construtor privado** – Impede a criação direta de instâncias  
+2. **Atributo estático** – Armazena a única instância da classe  
+3. **Método getInstance()** – Ponto de acesso global à instância  
 
 Este padrão é especialmente adequado para gerir recursos partilhados como conexões a bases de dados, garantindo consistência e eficiência.
 
 ---
 
-## Guias de Saúde Disponíveis
+## Padrão Facade
 
-O sistema oferece seis categorias de guias especializados:
+No âmbito do tópico de **padrões de estrutura**, foi introduzido no projeto o padrão **Facade**, mantendo-se o Singleton previamente existente.
 
-| Categoria | Descrição |
-|-----------|-----------|
-| **Nutrição e Alimentação** | Orientações sobre alimentação equilibrada e saudável |
-| **Exercício Físico** | Recomendações de atividade física adaptadas |
-| **Saúde Mental** | Estratégias de gestão de stress e bem-estar |
-| **Prevenção de Doenças** | Medidas preventivas e rastreios recomendados |
-| **Medicação e Tratamentos** | Informação sobre terapêuticas prescritas |
-| **Hábitos de Vida Saudável** | Sono, hidratação e rotinas diárias |
+O objetivo da aplicação do Facade foi reduzir a dependência entre os endpoints HTTP e a lógica interna do Activity Provider. Para esse efeito, o ficheiro `index.php` passou a assumir o papel de *front controller*, delegando no `HealthGuideFacade` a coordenação dos principais fluxos do sistema.
+
+O `HealthGuideFacade` atua como ponto de entrada único para operações como:
+- obtenção dos parâmetros JSON;
+- deployment de instâncias da atividade;
+- disponibilização e recolha de analytics;
+- obtenção dos dados necessários à renderização do guia.
+
+Internamente, o Facade articula serviços especializados, encapsulando a complexidade do subsistema e fornecendo uma interface simples e estável aos endpoints.
 
 ---
 
-## Estrutura do Projeto
+## Extrutura do Projeto
 
-```
-healthguide_singleton/
+HealthGuide_ActivityProvider/
 │
-├── index.php                    # Router principal e endpoints REST
-├── .htaccess                    # Configuração Apache (URL rewrite)
-├── Dockerfile                   # Container Docker
-├── render.yaml                  # Configuração Render
+├── index.php
+├── .htaccess
+├── Dockerfile
+├── render.yaml
 │
 ├── classes/
-│   └── SingletonDB.php          # Implementação do padrão Singleton
+│   ├── SingletonDB.php
+│   ├── facade/
+│   │   └── HealthGuideFacade.php
+│   └── services/
+│       ├── ParamsService.php
+│       ├── DeploymentService.php
+│       ├── AnalyticsService.php
+│       ├── ConfigService.php
+│       └── GuideService.php
 │
-└── templates/
-    ├── index.html               # Página inicial
-    └── guia.html                # Visualização de guias
-```
-
----
-
-## Como Testar
-
-### Testes via Browser
-
-**Página inicial:**  
-https://healthguide-activityprovider.onrender.com/
-
-**Configuração:**  
-https://healthguide-activityprovider.onrender.com/config-healthguide
-
-**Visualizar guia:**  
-https://healthguide-activityprovider.onrender.com/guia-healthguide?activityID=demo2025
+├── templates/
+    ├── index.html
+    ├── guia.html
+    ├── config-healthguide.php
+    ├── ui-json-params.html
+    ├── ui-deploy.html
+    └── ui-analytics-list.html
 
 
 ---
@@ -145,7 +141,6 @@ Remote Computer Networking Laboratory Using the Inven!RA Architecture.
 Cardoso, P., Morgado, L., & Coelho, A. (2020). Authoring Game-Based Learning Activities that are Manageable by Teachers. 
 
 ---
-
 
 
 Pedro Pereira - 1102837  
