@@ -97,38 +97,35 @@ O `HealthGuideFacade` atua como ponto de entrada único para operações como:
 Internamente, o Facade articula serviços especializados, encapsulando a complexidade do subsistema e fornecendo uma interface simples e estável aos endpoints.
 
 ---
+## Estrutura do Projeto
 
-## Extrutura do Projeto
-
-HealthGuide_ActivityProvider/
-│
-├── index.php
-├── .htaccess
-├── Dockerfile
-├── render.yaml
-│
-├── classes/
-│   ├── SingletonDB.php
-│   ├── facade/
-│   │   └── HealthGuideFacade.php
-│   └── services/
-│       ├── ParamsService.php
-│       ├── DeploymentService.php
-│       ├── AnalyticsService.php
-│       ├── ConfigService.php
-│       └── GuideService.php
-│
-├── templates/
-    ├── index.html
-    ├── guia.html
-    ├── config-healthguide.php
-    ├── ui-json-params.html
-    ├── ui-deploy.html
-    └── ui-analytics-list.html
-
+    HealthGuide_ActivityProvider/
+    │
+    ├── index.php
+    ├── .htaccess
+    ├── Dockerfile
+    ├── render.yaml
+    │
+    ├── classes/
+    │   ├── SingletonDB.php
+    │   ├── facade/
+    │   │   └── HealthGuideFacade.php
+    │   └── services/
+    │       ├── ParamsService.php
+    │       ├── DeploymentService.php
+    │       ├── AnalyticsService.php
+    │       ├── ConfigService.php
+    │       └── GuideService.php
+    │
+    ├── templates/
+    │   ├── index.html
+    │   ├── guia.html
+    │   ├── config-healthguide.php
+    │   ├── ui-json-params.html
+    │   ├── ui-deploy.html
+    │   └── ui-analytics-list.html
 
 ---
-
 ## Referências Bibliográficas
 
 Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (2000). *Padrões de Projeto: Soluções Reutilizáveis de Software Orientado a Objetos. Bookman.
