@@ -25,9 +25,14 @@ if ($uri === "/" || $uri === "/index.php") {
 // ========== GET /config-healthguide ==========
 if ($uri === "/config-healthguide" && $method === "GET") {
     header("Content-Type: text/html; charset=utf-8");
+
+    $viewModel = $facade->getConfigViewModel();
+    $guideTypes = $viewModel['guideTypes'] ?? [];
+
     include __DIR__ . "/templates/config-healthguide.php";
     exit;
 }
+
 
 // ========== UI (HTML) ==========
 if ($uri === "/ui/json-params-healthguide" && $method === "GET") {
