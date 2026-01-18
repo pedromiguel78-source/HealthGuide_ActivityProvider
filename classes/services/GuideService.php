@@ -2,15 +2,18 @@
 // classes/services/GuideService.php
 
 require_once __DIR__ . '/../SingletonDB.php';
+require_once __DIR__ . '/../observer/ActivityEventBus.php';
 
 /**
  * Serviço para obter (ou criar) os dados do guia.
  */
 class GuideService {
     private SingletonDB $db;
+    private ?ActivityEventBus $eventBus;
 
-    public function __construct(SingletonDB $db) {
+    public function __construct(SingletonDB $db, ?ActivityEventBus $eventBus = null) {
         $this->db = $db;
+        $this->eventBus = $eventBus;
     }
 
     /**
@@ -22,6 +25,16 @@ class GuideService {
         if (!$data) {
             $data = $this->db->createInstance($activityID);
         }
+
+
+        // Notifica observers (padrão Observer) que o guia foi visualizado
+        if ($this->eventBus) {
+            $this->eventBus->notify('GUIDE_VIEWED', [
+                'activityID' => $activityID,
+                'tipo' => $data['tipo'] ?? 'geral',
+            ]);
+        }
+
 
         return [
             'titulo' => $data['titulo'] ?? 'Guia de Saúde Digital',

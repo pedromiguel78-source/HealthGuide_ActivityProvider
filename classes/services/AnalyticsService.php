@@ -13,30 +13,44 @@ class AnalyticsService {
     /**
      * Processa o POST /analytics-healthguide
      * - valida activityID
-     * - obtém dados do guia
-     * - devolve payload de analytics
+     * - confirma se existe instância/dados
+     * - devolve payload de analytics (alimentado por eventos via Observer)
      */
     public function buildAnalyticsResponse(array $payload): array {
         $activityID = $payload['activityID'] ?? null;
+
         if (!$activityID) {
-            throw new InvalidArgumentException("activityID required");
+            http_response_code(400);
+            return ["error" => "activityID required"];
         }
 
         $guideData = $this->db->accessData($activityID);
         if (!$guideData) {
-            throw new RuntimeException("activityID not found");
+            http_response_code(404);
+            return ["error" => "Activity not found"];
         }
 
-        // Exemplo simples 
+        // Métricas recolhidas durante a execução (ex.: via Observer)
+        $metrics = $this->db->getMetrics($activityID);
+        $guideViews = (int)($metrics['guide_views'] ?? 0);
+        $deployCount = (int)($metrics['deploy_count'] ?? 0);
+
+        // Indicadores derivados (simples e transparentes)
+        $acessoAoGuia = $guideViews > 0;
+        $numeroDeAcessos = $guideViews;
+
+        // Score de engagement (heurística simples para demonstração)
+        $scoreEngagement = min(100, $guideViews * 10);
+
         return [
             "activityID" => $activityID,
             "guideData" => $guideData,
             "analytics" => [
-                "acessoAoGuia" => true,
-                "numeroDeAcessos" => 1,
-                "scoreEngagement" => 15
+                "acessoAoGuia" => $acessoAoGuia,
+                "numeroDeAcessos" => $numeroDeAcessos,
+                "deployCount" => $deployCount,
+                "scoreEngagement" => $scoreEngagement
             ]
         ];
     }
 }
-

@@ -105,6 +105,26 @@ class SingletonDB {
         return false;
     }
     
+ // ================== MÉTRICAS (para Observer) ==================
+    // Incrementa um contador associado a uma instância (activityID).
+    // Ex.: guide_views, deploy_count, etc.
+    public function incrementMetric(string $activityID, string $metric, int $delta = 1): void {
+        if (!isset($this->metrics[$activityID])) {
+            $this->metrics[$activityID] = [];
+        }
+        if (!isset($this->metrics[$activityID][$metric])) {
+            $this->metrics[$activityID][$metric] = 0;
+        }
+        $this->metrics[$activityID][$metric] += $delta;
+    }
+
+    // Obtém todas as métricas registadas para uma instância.
+    public function getMetrics(string $activityID): array {
+        return $this->metrics[$activityID] ?? [];
+    }
+
+
+
     //Retorna o número total de entradas
     public function count() {
         return count($this->db);

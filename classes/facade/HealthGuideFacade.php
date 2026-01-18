@@ -8,6 +8,11 @@ require_once __DIR__ . '/../services/AnalyticsService.php';
 require_once __DIR__ . '/../services/ConfigService.php';
 require_once __DIR__ . '/../services/GuideService.php';
 
+// Observer (padrão comportamental)
+require_once __DIR__ . '/../observer/ActivityEventBus.php';
+require_once __DIR__ . '/../observer/observers/GuideViewedObserver.php';
+require_once __DIR__ . '/../observer/observers/DeploymentObserver.php';
+
 /**
  * Facade: fornece uma interface única e simples para o funcionamento do Activity Provider.
  * O objetivo é isolar o "exterior" (endpoints) da complexidade/variação interna (serviços e lógica).
@@ -19,12 +24,20 @@ class HealthGuideFacade {
     private ConfigService $configService;
     private GuideService $guideService;
 
+    // EventBus/Subject do padrão Observer
+    private ActivityEventBus $eventBus;
+
     public function __construct(SingletonDB $db) {
+        $this->eventBus = new ActivityEventBus();
+        // Observers registados (podem ser estendidos futuramente)
+        $this->eventBus->attach('GUIDE_VIEWED', new GuideViewedObserver($db));
+        $this->eventBus->attach('DEPLOYED', new DeploymentObserver($db));
+
         $this->paramsService = new ParamsService();
-        $this->deploymentService = new DeploymentService($db);
+        $this->deploymentService = new DeploymentService($db, $this->eventBus);
         $this->analyticsService = new AnalyticsService($db);
         $this->configService = new ConfigService();
-        $this->guideService = new GuideService($db);
+        $this->guideService = new GuideService($db, $this->eventBus);
     }
 
     public function getJsonParams(): array {

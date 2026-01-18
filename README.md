@@ -96,36 +96,67 @@ O `HealthGuideFacade` atua como ponto de entrada único para operações como:
 
 Internamente, o Facade articula serviços especializados, encapsulando a complexidade do subsistema e fornecendo uma interface simples e estável aos endpoints.
 
+
+---
+## Padrão Observer
+
+No âmbito do tópico de **padrões de comportamento**, foi introduzido no projeto o padrão **Observer**, mantendo-se os padrões previamente implementados (Singleton e Facade).
+
+A aplicação deste padrão surgiu da necessidade de reagir a eventos relevantes do sistema sem introduzir dependências diretas entre os serviços principais e os componentes responsáveis pela recolha e tratamento de analytics.
+
+Neste contexto:
+- o **Analytics Subject Handler** assume o papel de *Subject*;
+- os **Analytics Collectors** (qualitativos e quantitativos) funcionam como *Observers*;
+- sempre que ocorre um evento relevante, o Subject notifica automaticamente os Observers registados.
+
+Desta forma, os serviços principais limitam-se a sinalizar a ocorrência de eventos, ficando a cargo dos Observers o processamento das ações associadas, como o acesso e atualização de métricas. Esta abordagem reduz o acoplamento entre componentes, melhora a separação de responsabilidades e facilita a evolução do sistema sem necessidade de alterar código existente.
+
 ---
 ## Estrutura do Projeto
 
+ ## Estrutura do Projeto
+
     HealthGuide_ActivityProvider/
     │
-    ├── index.php
-    ├── .htaccess
-    ├── Dockerfile
-    ├── render.yaml
-    │
     ├── classes/
-    │   ├── SingletonDB.php
     │   ├── facade/
     │   │   └── HealthGuideFacade.php
+    │   │
+    │   ├── observer/
+    │   │   ├── observers/
+    │   │   │   ├── DeploymentObserver.php
+    │   │   │   └── GuideViewedObserver.php
+    │   │   ├── ActivityEventBus.php
+    │   │   └── Observer.php
+    │   │
     │   └── services/
-    │       ├── ParamsService.php
-    │       ├── DeploymentService.php
     │       ├── AnalyticsService.php
     │       ├── ConfigService.php
-    │       └── GuideService.php
+    │       ├── DeploymentService.php
+    │       ├── GuideService.php
+    │       ├── ParamsService.php
+    │       └── SingletonDB.php
     │
     ├── templates/
-    │   ├── index.html
-    │   ├── guia.html
     │   ├── config-healthguide.php
-    │   ├── ui-json-params.html
+    │   ├── guia.html
+    │   ├── index.html
+    │   ├── ui-analytics-list.html
     │   ├── ui-deploy.html
-    │   └── ui-analytics-list.html
+    │   └── ui-json-params.html
+    │
+    ├── .htaccess
+    ├── Dockerfile
+    ├── index.php
+    ├── README.md
+    ├── render.yaml
+    └── test_singleton.php
+
+
 
 ---
+
+
 ## Referências Bibliográficas
 
 Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (2000). *Padrões de Projeto: Soluções Reutilizáveis de Software Orientado a Objetos. Bookman.
