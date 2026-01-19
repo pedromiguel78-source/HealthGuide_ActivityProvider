@@ -94,7 +94,8 @@ O `HealthGuideFacade` atua como ponto de entrada único para operações como:
 - disponibilização e recolha de analytics;
 - obtenção dos dados necessários à renderização do guia.
 
-Internamente, o Facade articula serviços especializados, encapsulando a complexidade do subsistema e fornecendo uma interface simples e estável aos endpoints.
+Internamente, o Facade articula serviços especializados, encapsulando a complexidade do 
+subsistema e fornecendo uma interface simples e estável aos endpoints.
 
 
 ---

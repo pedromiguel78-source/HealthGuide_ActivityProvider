@@ -10,12 +10,19 @@
         margin: 0;
         background: linear-gradient(135deg, #7FDBFF, #B5E9FF);
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-direction: column;
         min-height: 100vh;
         font-family: Verdana, sans-serif;
         color: #003B5C;
         padding: 20px;
+    }
+
+    /* centra o conteúdo, deixando o footer no fundo */
+    .content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .container {
@@ -97,57 +104,62 @@
     .footer {
         text-align: center;
         padding: 20px;
-        margin-top: 20px;
+        margin-top: 30px;
         background: rgba(255, 255, 255, 0.2);
         border-radius: 15px;
         backdrop-filter: blur(4px);
         border: 2px solid rgba(255,255,255,0.3);
+        font-size: 13px;
     }
 </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-card">
-            <h1>📋 <?php echo htmlspecialchars($titulo); ?></h1>
-            <p style="font-size: 18px; opacity: 0.85; margin-top: 10px;">
-                Guia de Saúde Personalizado
-            </p>
-        </div>
 
-        <div class="card">
-            <h2>📝 Resumo</h2>
-            <p><?php echo htmlspecialchars($resumo); ?></p>
-        </div>
+    <div class="content">
+        <div class="container">
+            <div class="header-card">
+                <h1>📋 <?php echo htmlspecialchars($titulo); ?></h1>
+                <p style="font-size: 18px; opacity: 0.85; margin-top: 10px;">
+                    Guia de Saúde Personalizado
+                </p>
+            </div>
 
-        <div class="card">
-            <h2>📋 Instruções</h2>
-            <div class="instructions-box">
-                <?php 
-                $linhas = explode("\n", $instrucoes);
-                if (count($linhas) > 1) {
-                    echo "<ul>";
-                    foreach ($linhas as $linha) {
-                        if (trim($linha)) {
-                            echo "<li>" . htmlspecialchars(trim($linha)) . "</li>";
+            <div class="card">
+                <h2>📝 Resumo</h2>
+                <p><?php echo htmlspecialchars($resumo); ?></p>
+            </div>
+
+            <div class="card">
+                <h2>📋 Instruções</h2>
+                <div class="instructions-box">
+                    <?php 
+                    $linhas = explode("\n", $instrucoes);
+                    if (count($linhas) > 1) {
+                        echo "<ul>";
+                        foreach ($linhas as $linha) {
+                            if (trim($linha)) {
+                                echo "<li>" . htmlspecialchars(trim($linha)) . "</li>";
+                            }
                         }
+                        echo "</ul>";
+                    } else {
+                        echo "<p>" . nl2br(htmlspecialchars($instrucoes)) . "</p>";
                     }
-                    echo "</ul>";
-                } else {
-                    echo "<p>" . nl2br(htmlspecialchars($instrucoes)) . "</p>";
-                }
-                ?>
+                    ?>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="/" class="back-button">← Voltar à Página Inicial</a>
             </div>
         </div>
+    </div>
 
-        <div style="text-align: center;">
-            <a href="/" class="back-button">← Voltar à Página Inicial</a>
-        </div>
-
-        <div class="footer">
+    <div class="footer">
         © 2025 HealthGuide — Singleton · Facade · Observer<br>
         Pedro Pereira - 1102837<br>
-        Universidade Aberta - Arquitetura e Padrões de Software 
+        Universidade Aberta - Arquitetura e Padrões de Software
     </div>
-    </div>
+
 </body>
 </html>

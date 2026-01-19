@@ -14,31 +14,31 @@ class SingletonDB {
     
     // Base de dados (array em memória)
     private $db = [];
+
+    // ✅ MÉTRICAS (para Observer) — declarar para evitar "dynamic property" no PHP 8.2+
+    private $metrics = [];
     
     // Resumo padrão para novos guias
     const DEFAULT_RESUMO = "Guia de saúde digital 2025: Informação atualizada sobre gestão de saúde e bem-estar pessoal.";
     
     // Construtor privado - previne criação direta de objetos
-    
     private function __construct() {
         // Inicializa base de dados vazia
         $this->db = [];
+
+        // ✅ Inicializa métricas (opcional, mas limpo)
+        $this->metrics = [];
     }
     
     // Previne clonagem da instância
-    
     private function __clone() {}
     
-    
-     // Previne deserialização da instância
-     
+    // Previne deserialização da instância
     public function __wakeup() {
         throw new Exception("Cannot unserialize singleton");
     }
     
-     //Retorna a instância única da classe (Singleton)
-     
-   
+    // Retorna a instância única da classe (Singleton)
     public static function getInstance() {
         if (self::$instance === null) {
             self::$instance = new SingletonDB();
@@ -63,14 +63,12 @@ class SingletonDB {
         return $this->db[$activityID];
     }
     
-    //Retorna os dados de uma entrada específica
-    
+    // Retorna os dados de uma entrada específica
     public function accessData($activityID) {
         return isset($this->db[$activityID]) ? $this->db[$activityID] : null;
     }
     
-    //Atualiza os dados de uma entrada existente no banco de dados
-    
+    // Atualiza os dados de uma entrada existente no banco de dados
     public function executeOperations($activityID, $resumo = null, $titulo = null, $tipo = null, $conteudo = null, $instrucoes = null) {
         if (!isset($this->db[$activityID])) {
             throw new Exception("Activity ID '$activityID' não encontrado no banco de dados.");
@@ -95,8 +93,7 @@ class SingletonDB {
         return $this->db[$activityID];
     }
     
-    //Remove uma entrada da base de dados
-    
+    // Remove uma entrada da base de dados
     public function deleteInstance($activityID) {
         if (isset($this->db[$activityID])) {
             unset($this->db[$activityID]);
@@ -105,7 +102,7 @@ class SingletonDB {
         return false;
     }
     
- // ================== MÉTRICAS (para Observer) ==================
+    // ================== MÉTRICAS (para Observer) ==================
     // Incrementa um contador associado a uma instância (activityID).
     // Ex.: guide_views, deploy_count, etc.
     public function incrementMetric(string $activityID, string $metric, int $delta = 1): void {
@@ -123,9 +120,7 @@ class SingletonDB {
         return $this->metrics[$activityID] ?? [];
     }
 
-
-
-    //Retorna o número total de entradas
+    // Retorna o número total de entradas
     public function count() {
         return count($this->db);
     }
