@@ -6,16 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuração - HealthGuide</title>
 
-    <style>
-        body {
-            margin: 0;
-            background: linear-gradient(135deg, #7FDBFF, #B5E9FF);
+    
+    <link rel="stylesheet" href="/templates/styles/common.css">
+<style>
+body {
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            font-family: Verdana, sans-serif;
-            color: #003B5C;
-            padding: 20px;
         }
 
      
@@ -33,9 +29,6 @@
 
         .card {
             padding: 40px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(6px);
             border: 2px solid rgba(255,255,255,0.4);
         }
 
@@ -105,18 +98,7 @@
             text-decoration: none;
             font-weight: 600;
         }
-
-        .footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            backdrop-filter: blur(4px);
-            border: 2px solid rgba(255,255,255,0.3);
-            font-size: 13px;
-        }
-    </style>
+</style>
 </head>
 
 <body>
