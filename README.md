@@ -115,30 +115,31 @@ Desta forma, os serviços principais limitam-se a sinalizar a ocorrência de eve
 ---
 ## Estrutura do Projeto
 
- ## Estrutura do Projeto
-
     HealthGuide_ActivityProvider/
     │
     ├── classes/
+    │   ├── SingletonDB.php
+    │   │
     │   ├── facade/
     │   │   └── HealthGuideFacade.php
     │   │
     │   ├── observer/
-    │   │   ├── observers/
-    │   │   │   ├── DeploymentObserver.php
-    │   │   │   └── GuideViewedObserver.php
     │   │   ├── ActivityEventBus.php
-    │   │   └── Observer.php
+    │   │   ├── Observer.php
+    │   │   └── observers/
+    │   │       ├── DeploymentObserver.php
+    │   │       └── GuideViewedObserver.php
     │   │
     │   └── services/
     │       ├── AnalyticsService.php
     │       ├── ConfigService.php
     │       ├── DeploymentService.php
     │       ├── GuideService.php
-    │       ├── ParamsService.php
-    │       └── SingletonDB.php
+    │       └── ParamsService.php
     │
     ├── templates/
+    │   ├── styles/
+    │   │   └── common.css
     │   ├── config-healthguide.php
     │   ├── guia.html
     │   ├── index.html
@@ -153,9 +154,8 @@ Desta forma, os serviços principais limitam-se a sinalizar a ocorrência de eve
     ├── render.yaml
     └── test_singleton.php
 
-
-
 ---
+
 
 
 ## Referências Bibliográficas
